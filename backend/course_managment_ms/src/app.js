@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require("cors")
+const Authentication = require('../src/middlewares/Authentication')
 
 const CourseRoute = require('./routes/course.route');
 const bodyParser = require('body-parser');
@@ -12,6 +13,7 @@ module.exports = async (app, channel)=> {
     
     app.use(bodyParser.urlencoded({extended: true}))
 
+    // app.use(Authentication)
     CourseRoute(app, channel)
     LessonRoute(app, channel)
 
