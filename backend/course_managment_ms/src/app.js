@@ -1,10 +1,16 @@
 const express = require('express');
-const app = express();
+const cors = require("cors")
 
-const courseRouter = require('./routes/course.route')
+const CourseRoute = require('./routes/course.route');
+const bodyParser = require('body-parser');
 
-app.use(express.json());
 
-app.use('/api', courseRouter);
+module.exports = async (app, channel)=> {
+    app.use(express.json());
+    app.use(cors());
+    
+    app.use(bodyParser.urlencoded({extended: true}))
 
-module.exports = app;
+    CourseRoute(app, channel)
+
+}

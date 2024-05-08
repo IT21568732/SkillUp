@@ -1,5 +1,5 @@
 module.exports = {
-    MSG_QUEUE_URL: "amqp://guest:guest@localhost:5672",
-    EXCHANGE_NAME: "course-service-queue",
-    AUTH_ROUTING_KEY: "auth00"
+    MSG_QUEUE_URL: "amqp://guest:guest@localhost:15672",
+    EXCHANGE_NAME: "course_service",
+    AUTH_ROUTING_KEY: "Course"
   };

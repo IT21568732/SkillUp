@@ -25,6 +25,15 @@ const CourseSchema = new Schema({
     category: {
         type: String,
         require: true
+    },
+    imageUrl: {
+        type: String,
+        require: true
+    },
+    status: {
+      type: Boolean,
+      default: false,
+      required: true,
     }
 })
 
