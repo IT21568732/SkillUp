@@ -12,7 +12,7 @@ const LessonSchema = new Schema({
         require: true
     },
     lessonDes: {
-        type: Number,
+        type: String,
         require: true
     },
     video: {

@@ -73,6 +73,38 @@ class CourseService {
         });
     }
 }
+
+    // Get all courses
+    async GetAllCourses(res) {
+      try {
+          const courses = await Course.find();
+          res.status(200).send({
+            success: true,
+            data: courses,
+            message: 'All Courses fetched successfully!'
+        });
+      } catch (error) {
+          throw new Error('Failed to fetch courses');
+      }
+    }
+
+    //get course by id
+  async GetCourseById(payload) {
+    const course = await Course.findById(payload.id)
+      // .populate({
+      //   path: "lessons",
+      //   model: "Lesson",
+      // })
+      // .exec();
+
+    if (!course) {
+      return res.status(404).send({
+        success: false,
+        message: "Course not found",
+      });
+    }
+    return course;
+  }
 }
 
 module.exports = CourseService;

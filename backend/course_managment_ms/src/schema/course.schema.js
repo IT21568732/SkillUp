@@ -34,7 +34,13 @@ const CourseSchema = new Schema({
       type: Boolean,
       default: false,
       required: true,
-    }
+    },
+  lessons: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Lesson",
+    },
+  ]
 })
 
 module.exports = mongoose.model("Course", CourseSchema)

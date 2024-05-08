@@ -3,6 +3,7 @@ const cors = require("cors")
 
 const CourseRoute = require('./routes/course.route');
 const bodyParser = require('body-parser');
+const LessonRoute = require('./routes/lesson.route');
 
 
 module.exports = async (app, channel)=> {
@@ -12,5 +13,6 @@ module.exports = async (app, channel)=> {
     app.use(bodyParser.urlencoded({extended: true}))
 
     CourseRoute(app, channel)
+    LessonRoute(app, channel)
 
 }
