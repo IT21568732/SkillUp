@@ -48,7 +48,7 @@ app.post("/course",async(req,res)=>{
 //get all the courses
 app.get("/courses", async (req, res) => {
     try {
-        const courses = await Course.find()
+        const courses = await Course.find();
 
         res.status(200).send(courses);
 
@@ -63,6 +63,8 @@ app.get("/course/:id", async (req, res) => {
     try {
         const course = await Course.findById(req.params.id);
 
+        //authenticate the generated code with course code
+
         if (course) {
             res.status(200).send(course);
         } else {
@@ -71,6 +73,25 @@ app.get("/course/:id", async (req, res) => {
 
     } catch (error) {
         res.status(500).send( 'Unable to get the Course');
+    }
+});
+
+//delete course by id
+app.delete("/course/:id", async (req, res) => {
+    //res.send(req.params.id);
+    try {
+
+        const courseID = req.params.id;
+        const deletecourse = await Course.findOneAndDelete({_id:courseID});
+
+        if (deletecourse) {
+            res.status(200).send("Course deleted successfully.");
+        } else {
+            res.status(404).send("Course not found");
+        }
+
+    } catch (error) {
+        res.status(500).send( 'Unable to delete the Course');
     }
 });
 
