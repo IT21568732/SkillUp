@@ -1,19 +1,9 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const LearnerController = require("../controllers/learnerController")
+const learnerController = require('../controllers/learnerController');
 
-//router.get("/", LearnerController.allStudents);
-
-// Update a student
-router.put("/update/:id", LearnerController.updatelearner);
-
-// Delete a single student
-router.delete("/delete/:id", LearnerController.deletelearner);
-
-// Get details of a single student
-router.get("/get/:id", LearnerController.singlelearner);
-
-// search students
-router.get("/search/:key", LearnerController.searchlearner);
+router.post('/enroll', learnerController.enrollCourse);
+router.get('/enrolled-courses', learnerController.getEnrolledCourses);
+router.put('/update-progress', learnerController.updateProgress);
 
 module.exports = router;
