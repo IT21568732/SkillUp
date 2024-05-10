@@ -78,11 +78,12 @@ class CourseService {
     async GetAllCourses(res) {
       try {
           const courses = await Course.find();
-          res.status(200).send({
-            success: true,
-            data: courses,
-            message: 'All Courses fetched successfully!'
-        });
+          return courses;
+        //   res.status(200).send({
+        //     success: true,
+        //     data: courses,
+        //     message: 'All Courses fetched successfully!'
+        // });
       } catch (error) {
           throw new Error('Failed to fetch courses');
       }

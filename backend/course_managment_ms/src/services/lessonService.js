@@ -44,7 +44,7 @@ class LessonService{
 
   //delete lesson
   async DeleteLesson(payload, res) {
-    const lesson = await Lesson.findByIdAndDelete(payload.lessonId);
+    const lesson = await Lesson.findByIdAndDelete(payload.id);
 
     if (!lesson) {
       return res.status(404).send({
@@ -74,6 +74,28 @@ class LessonService{
       data: lesson,
       message: "Lesson deleted successfully",
     });
+  }
+
+  // Get all lessons for a given courseId
+  async GetLesson(payload) {
+    try {
+      const lesson = await Lesson.findById(payload.id );
+
+      if (!lesson) {
+        return res.status(404).send({
+          success: false,
+          message: "No lessons found for the given courseId",
+        });
+      }
+
+      return lesson;
+    } catch (error) {
+      console.error("Error fetching lessons:", error);
+      res.status(500).send({
+        success: false,
+        message: "Failed to fetch lessons",
+      });
+    }
   }
 
 }

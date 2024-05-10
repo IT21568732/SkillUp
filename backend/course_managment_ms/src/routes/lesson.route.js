@@ -69,4 +69,18 @@ module.exports = (app, channel) => {
     const result = await service.DeleteLesson(req.body, res);
     res.send(result);
   });
+
+  //get single lesson 
+  app.get(`${baseUrl}/:id`, async (req, res) => {
+    const data = {
+        id: req.params.id
+      };
+    const result = await service.GetLesson(data, res);
+    
+    res.status(200).send({
+        success: true,
+        data: result,
+        message: "Lessons fetched successfully",
+      });
+  });
 }

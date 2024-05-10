@@ -82,7 +82,12 @@ module.exports = (app, channel) => {
     app.get(`${baseUrl}/all_courses`, async (req, res) => {
         try {
             const result = await service.GetAllCourses(res);
-            res.send(result)
+            // res.send(result)
+            res.status(200).send({
+              success: true,
+              data: result,
+              message: 'All Courses fetched successfully!'
+          });
         } catch (error) {
             res.status(500).send({ message: error.message });
         }
