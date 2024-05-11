@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const NotifyController = require("../controllers/notificationController");
+const { sendEmailNotification, sendSMSNotification } = require("../controllers/notificationController");
 
-router.post("/email", NotifyController.sendNotification);
+router.post("/email", sendEmailNotification);
+router.post("/sms", sendSMSNotification);
+
 
 module.exports = router;

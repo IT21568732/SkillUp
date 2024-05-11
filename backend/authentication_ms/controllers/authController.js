@@ -36,7 +36,7 @@ exports.login = async (req, res, next) => {
 
     // Compare passwords
     if (user) {
-      console.log("User:", user);
+      console.log(user);
       const isPasswordValid = await bcrypt.compare(password, user.password);
       console.log("Is Password Valid:", isPasswordValid);
       if (!isPasswordValid) {
@@ -66,7 +66,7 @@ exports.login = async (req, res, next) => {
   }
 };
 
-exports.register = async (req, res, next) => {
+exports.register = async (req, res) => {
   const { name, email, password, mobile, role } = req.body;
 
   if (!name || !email || !password) {

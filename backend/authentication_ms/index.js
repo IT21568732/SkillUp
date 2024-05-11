@@ -12,7 +12,7 @@ dotenv.config();
 
 // Set up CORS
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN || "http://localhost:8002",
+  origin: 'http://localhost:3000' || "http://localhost:8002",
 };
 app.use(cors(corsOptions));
 
