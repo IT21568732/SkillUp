@@ -14,31 +14,29 @@
 #     ports:
 #       - '5672:5672'
 
-#   products:
+#   courses:
 #     build:
 #       dockerfile: Dockerfile
-#       context: ./products
-#     container_name: products
+#       context: ./courses
+#     container_name: courses
 #     ports:
-#       - "8002:8002"
+#       - "8001:8001"
 #     restart: always
 #     depends_on:
 #       - "nosql-db"
 #       - "rabbitmq"
 #     volumes:
 #       - .:/app
-#       - /app/products/node_modules
+#       - /app/courses/node_modules
 
 #     env_file:
-#       - ./products/.env.dev
+#       - ./courses/.env
 
 #     nginx-proxy:
 #       build:
 #         dockerfile: Dockerfile
 #         context: ./proxy
 #       depends_on:
-#         - products
-#         - shopping
-#         - customer
+#         - courses
 #       ports:
 #         - 80:80

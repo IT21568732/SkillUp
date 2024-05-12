@@ -3,17 +3,27 @@ const Course = require('../schema/course.schema'); // Import the Course model
 class CourseService {
     //? This is remote service function
   async SubscribeEvents(payload) {
+
     payload = JSON.parse(payload);
 
+    const {event, data} = payload;
+
+    const {userId} = data;
+
     switch (payload.event) {
+
       case "CREATE_COURSE":
-        this.CreateCourse(payload);
-        break;
+          this.CreateCourse(payload);
+          break;
+      case "UPDATE_COURSE":
+          this.UpdateCourse(payload);
+          break;
       case "GET_COURSES":
-        this.R_getCourses();
-        break;
+          this.GetAllCourses(payload);
+          break;
       default:
-        break;
+          console.log('Event not recognized');
+          break;
     }
   }
   //create course
@@ -75,15 +85,10 @@ class CourseService {
 }
 
     // Get all courses
-    async GetAllCourses(res) {
+    async GetAllCourses(payload,res) {
       try {
-          const courses = await Course.find();
+          const courses = await Course.find({ instructor: payload });
           return courses;
-        //   res.status(200).send({
-        //     success: true,
-        //     data: courses,
-        //     message: 'All Courses fetched successfully!'
-        // });
       } catch (error) {
           throw new Error('Failed to fetch courses');
       }

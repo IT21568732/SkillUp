@@ -3,6 +3,7 @@ const {
   MSG_QUEUE_URL,
   EXCHANGE_NAME,
   AUTH_ROUTING_KEY,
+  QUEUE_NAME,
 } = require("../config/index.config");
 
 //? Create a channel
@@ -21,9 +22,13 @@ const CreateChannel = async () => {
 };
 
 //? Publish message to queue
-const PublishMessage = (channel, routingKey, msg) => {
-  channel.publish(EXCHANGE_NAME, routingKey, Buffer.from(msg));
-  console.log(`${msg} sent: ${routingKey} service`);
+const PublishMessage = async (channel, routingKey, msg) => {
+  try{
+    await channel.publish(EXCHANGE_NAME, routingKey, Buffer.from(msg));
+    console.log(`${msg} sent: ${routingKey} service`);
+  }catch(error){
+    console.log(error)
+  }
 };
 
 //? Consume message from queue
@@ -31,18 +36,18 @@ const SubscribeMessages = async (channel, service) => {
   await channel.assertExchange(EXCHANGE_NAME, "direct", { durable: true });
 
   //!Create queue
-  const q = await channel.assertQueue("AuthQueue");
+  const appQueue = await channel.assertQueue(QUEUE_NAME);
 
   //!Bind Queue
   // This consumer will concume messages from Auth Only
-  channel.bindQueue(q.queue, EXCHANGE_NAME, AUTH_ROUTING_KEY);
+  channel.bindQueue(appQueue.queue, EXCHANGE_NAME, AUTH_ROUTING_KEY);
 
   //!concume messages from queue
-  channel.consume(q.queue, (msg) => {
-    if (msg.content) {
-      service.SubscribeEvents(msg.content.toString());
-    }
-    channel.ack(msg);
+  channel.consume(appQueue.queue, data => {
+    console.log('received data')
+    console.log(data.content.toString())
+    service.SubscribeEvents(data.content.toString())
+    channel.ack(data);
   });
 };
 

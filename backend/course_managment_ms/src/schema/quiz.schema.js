@@ -13,6 +13,7 @@ const QuizSchema = new Schema({
     ref: "Course",
     require: true,
   },
+  quizName:{type:String, required:true},
   questions: { type: [QuestionSchema], required: true },
 });
 

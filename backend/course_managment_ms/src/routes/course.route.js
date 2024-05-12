@@ -1,5 +1,6 @@
 const CourseService = require("../services/courseService");
-const { SubscribeMessages } = require("../utils/index.utils");
+const { SubscribeMessages, PublishMessage } = require("../utils/index.utils");
+const { AUTH_ROUTING_KEY} = require("../config/index.config")
 const upload = require("../config/multer.config");
 const cloudinary = require("../config/cloudinary.config");
 
@@ -79,15 +80,19 @@ module.exports = (app, channel) => {
   });
 
   // GET route for getting all courses
-    app.get(`${baseUrl}/all_courses`, async (req, res) => {
+    app.post(`${baseUrl}/all_courses`, async (req, res) => {
         try {
-            const result = await service.GetAllCourses(res);
+            const result = await service.GetAllCourses(req.body.instructor ,res);
             // res.send(result)
             res.status(200).send({
               success: true,
               data: result,
               message: 'All Courses fetched successfully!'
           });
+
+          //publish authEventData
+          // PublishMessage(channel, AUTH_ROUTING_KEY, JSON.stringify(result))
+
         } catch (error) {
             res.status(500).send({ message: error.message });
         }

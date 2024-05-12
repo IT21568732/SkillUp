@@ -11,7 +11,7 @@ class LessonService{
             this.CreateCourseTest(payload);
             break;
           case "GET_LESSONS":
-            this.R_getCourses();
+            this.GetLesson();
             break;
           default:
             break;
