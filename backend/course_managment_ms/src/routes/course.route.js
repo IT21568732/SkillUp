@@ -98,6 +98,25 @@ module.exports = (app, channel) => {
         }
     });
 
+    // GET route for getting all courses- user
+    app.get(`${baseUrl}/all_learner_courses`, async (req, res) => {
+      try {
+          const result = await service.GetAllCoursesUser();
+          // res.send(result)
+          res.status(200).send({
+            success: true,
+            data: result,
+            message: 'All Courses fetched successfully!'
+        });
+
+        //publish authEventData
+        // PublishMessage(channel, AUTH_ROUTING_KEY, JSON.stringify(result))
+
+      } catch (error) {
+          res.status(500).send({ message: error.message });
+      }
+  });
+
     //get course by ID
     app.get(`${baseUrl}/course_by_id/:id`, async (req, res) => {
         const data = {

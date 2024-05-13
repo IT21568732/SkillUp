@@ -6,6 +6,10 @@ class CourseService {
 
     payload = JSON.parse(payload);
 
+    const {event, data} = payload;
+
+    const {userId} = data;
+
     switch (payload.event) {
 
       case "CREATE_COURSE":
@@ -90,9 +94,24 @@ class CourseService {
       }
     }
 
+    // Get all courses-user
+    async GetAllCoursesUser(res) {
+        try {
+            const courses = await Course.find();
+            return courses;
+        } catch (error) {
+            throw new Error('Failed to fetch courses');
+        }
+      }
+
     //get course by id
   async GetCourseById(payload) {
     const course = await Course.findById(payload.id)
+      // .populate({
+      //   path: "lessons",
+      //   model: "Lesson",
+      // })
+      // .exec();
 
     if (!course) {
       return res.status(404).send({

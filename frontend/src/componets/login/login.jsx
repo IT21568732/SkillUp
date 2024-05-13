@@ -25,9 +25,14 @@ export default function Login() {
         localStorage.setItem("authToken", response.data.token);
         localStorage.setItem("userData", JSON.stringify(response.data.User));
         if (response.data.role === "INSTRUCTOR") {
-          navigate("instructor/courses");
+          navigate("instructor/courses");              
+        } else if (response.data.role === "LEARNER") {
+            navigate("learner/learnerHome");
+        } else if (response.data.role === "ADMIN") {
+            navigate("admin/adminDashboard");
         } else {
-          navigate("/");
+            // Handle unknown roles or other cases"", "INSTRUCTOR", "
+            navigate("/");
         }
       })
       .catch((error) => {
@@ -53,7 +58,7 @@ export default function Login() {
     <div className="font-poppins bg-white text-blue-500">
       <div className="flex justify-center items-center h-screen ">
         <div className="flex flex-col items-start">
-          <h1 className="text-blue-500 text-7xl font-semibold">
+          <h1 className="ml-25 text-blue-500 text-6xl font-semibold">
             Unveil Your Educational Destiny
           </h1>
         </div>
@@ -72,7 +77,7 @@ export default function Login() {
           <div className="absolute right-0 flex justify-between px-4 py-2 space-x-4 top-4 ">
             <Link
               className="hidden sm:block px-5 py-2 font-semibold bg-blue-500 hover:bg-blue-600 text-white rounded-lg"
-              to={"/login"}
+              onClick={scrollToLoginForm}
             >
               Login
             </Link>

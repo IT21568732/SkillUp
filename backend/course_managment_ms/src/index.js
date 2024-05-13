@@ -3,6 +3,7 @@ const expressApp = require('./app')
 const dotenv = require("dotenv")
 const connectDB = require('./config/db')
 const {CreateChannel} = require("./utils/index.utils")
+// Define routes, middleware, etc. here
 
 const PORT = process.env.PORT || 8001;
 
