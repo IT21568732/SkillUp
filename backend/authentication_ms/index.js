@@ -11,10 +11,7 @@ const authRoutes = require("./routes/authRoute");
 dotenv.config();
 
 // Set up CORS
-const corsOptions = {
-  origin: process.env.CORS_ORIGIN || "http://localhost:3001",
-};
-app.use(cors(corsOptions));
+app.use(cors());
 
 // Connect to MongoDB
 mongoose

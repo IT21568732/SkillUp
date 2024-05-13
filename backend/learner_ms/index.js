@@ -3,26 +3,20 @@ const http = require("http");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const cors = require("cors");
-const app = express();
+const cors = require("cors"); // Add this line
+const learnerRoutes = require("./routes/learnerRoute");
 
-const learnerRoutes = require('./routes/learnerRoute');
+const app = express();
 
 // Load environment variables
 dotenv.config();
 
 // Set up CORS
-const corsOptions = {
-  origin: process.env.CORS_ORIGIN || "http://localhost:3003",
-};
-app.use(cors(corsOptions));
+app.use(cors()); // Allow requests from all origins. You can configure it to allow requests from specific origins.
 
 // Connect to MongoDB
 mongoose
-  .connect(
-    process.env.MONGODB_URL
-    // ,{ useNewUrlParser: true, useUnifiedTopology: true }
-  )
+  .connect(process.env.MONGODB_URL)
   .then(() => {
     console.log("Connected to MongoDB");
   })
@@ -54,7 +48,7 @@ app.use((error, req, res, next) => {
 });
 
 // Create HTTP server
-const port = process.env.PORT || 8088;
+const port = process.env.PORT || 8003;
 const server = http.createServer(app);
 
 // Start server

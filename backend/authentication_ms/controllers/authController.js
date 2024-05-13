@@ -36,7 +36,7 @@ exports.login = async (req, res, next) => {
 
     // Compare passwords
     if (user) {
-      console.log("User:", user);
+      console.log(user);
       const isPasswordValid = await bcrypt.compare(password, user.password);
       console.log("Is Password Valid:", isPasswordValid);
       if (!isPasswordValid) {
@@ -45,9 +45,8 @@ exports.login = async (req, res, next) => {
 
     // Generate JWT token
     const token = jwt.sign(
-      { userId: user._id },
-      authConfig.secretKey,
-      { expiresIn: "1h" }
+      { userId: user._id, userEmail:user.email },
+      authConfig.secretKey
     );
 
     return res.status(200).json({
@@ -66,7 +65,7 @@ exports.login = async (req, res, next) => {
   }
 };
 
-exports.register = async (req, res, next) => {
+exports.register = async (req, res) => {
   const { name, email, password, mobile, role } = req.body;
 
   if (!name || !email || !password) {

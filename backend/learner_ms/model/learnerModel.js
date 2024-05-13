@@ -6,10 +6,11 @@ const learnerSchema = new mongoose.Schema({
     enrolledCourses: [
         {
             courseId: { type: String },
-            progress: { type: Number, default: 0 },
+            progress: { type: Number,required:false, default: 0 },
             enrolledOn: { type: Date,required: false,default: Date.now}
-        }
-    ]
-});
+        },
+    ],
+}, { timestamps: true }
+);
 
 module.exports = mongoose.model('Learner', learnerSchema);
