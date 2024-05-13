@@ -6,10 +6,6 @@ class CourseService {
 
     payload = JSON.parse(payload);
 
-    const {event, data} = payload;
-
-    const {userId} = data;
-
     switch (payload.event) {
 
       case "CREATE_COURSE":
@@ -97,11 +93,6 @@ class CourseService {
     //get course by id
   async GetCourseById(payload) {
     const course = await Course.findById(payload.id)
-      // .populate({
-      //   path: "lessons",
-      //   model: "Lesson",
-      // })
-      // .exec();
 
     if (!course) {
       return res.status(404).send({
