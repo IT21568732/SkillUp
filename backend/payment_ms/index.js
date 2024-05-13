@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const app = express();
+const PaymentRoutes = require("./routes/PaymentRoute");
 
 // Load environment variables
 dotenv.config();
@@ -33,6 +34,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Set up routes
+app.use("/payment", PaymentRoutes);
 
 // Server Side Error Handling
 app.use((req, res, next) => {
@@ -56,5 +58,5 @@ const server = http.createServer(app);
 
 // Start server
 server.listen(port, () => {
-  console.log("Server is listening on port: " + port);
+  console.log("Payment Server is listening on port: " + port);
 });
