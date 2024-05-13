@@ -4,17 +4,15 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
+
+// Create Express app
 const app = express();
-const authRoutes = require("./routes/authRoute");
 
 // Load environment variables
 dotenv.config();
 
 // Set up CORS
-const corsOptions = {
-  origin: 'http://localhost:3000' || "http://localhost:8002",
-};
-app.use(cors(corsOptions));
+app.use(cors());
 
 // Connect to MongoDB
 mongoose
@@ -29,20 +27,24 @@ mongoose
     console.error("Database Connection Error: ", err);
   });
 
-// Set up Body Parser middleware
+// Set up Body Parser middleware for JSON and URL encoded data
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// Set up routes
+// Import authentication routes
+const authRoutes = require("./routes/authRoute");
+
+// Route setup
 app.use("/auth", authRoutes);
 
-// Server Side Error Handling
+// Middleware for handling 404 errors
 app.use((req, res, next) => {
   const error = new Error("Not found");
   error.status = 404;
   next(error);
 });
 
+// Global error handler middleware
 app.use((error, req, res, next) => {
   res.status(error.status || 500);
   res.json({
@@ -52,8 +54,10 @@ app.use((error, req, res, next) => {
   });
 });
 
-// Create HTTP server
+// Define the port for the server
 const port = process.env.PORT || 8088;
+
+// Create HTTP server
 const server = http.createServer(app);
 
 // Start server

@@ -56,8 +56,8 @@ exports.sendEmailNotification = async (req, res) => {
     const { email } = req.body;
 
     // Read the HTML template from a file
-    const htmlTemplate = fs.readFileSync('./template/enrollmentConfirmationEmail.html', 'utf8');
-
+    const htmlTemplate = fs.readFileSync('./template/enrollmentConfirmationEmail.html', 'utf8');    
+    
     // Send email
     await sendEmail(email,htmlTemplate);
 
