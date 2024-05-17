@@ -142,7 +142,7 @@ export default function Signup() {
             >
               <option value="">Select a role</option>
               <option value="LEARNER">Learner</option>
-              <option value="INSTRUCTOR" disabled>Course Instructor</option>
+              <option value="INSTRUCTOR">Course Instructor</option>
             </select>
           </div>
 

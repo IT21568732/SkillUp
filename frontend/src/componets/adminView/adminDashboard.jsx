@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 export default function AdminDashboard() {
   const incomeRef = useRef(null);
   const approveCoursesRef = useRef(null);
+  const unlistCoursesRef = useRef(null);
   const navigate = useNavigate();
 
   const scrollToSection = (ref) => {
@@ -28,6 +29,7 @@ export default function AdminDashboard() {
   }
 
   const [courses, setCourses] = useState([]);
+  const [coursesT, setTrueCourses] = useState([]);
 
   useEffect(() => {
     fetch("http://localhost:8001/course/all_learner_courses")
@@ -40,77 +42,164 @@ export default function AdminDashboard() {
       .catch((error) => console.error("Error fetching courses:", error));
   }, []);
 
-  const handleStatusChange = (courseId) => {
-    axios.put(`http://localhost:8001/course/update_status/${courseId}`, { status: true })
-      .then((response) => {
-        if (response.status === 200) {
-            // Display success toast message
-            toast.success('Course status updated successfully!', {
-              position: 'top-right',
-              autoClose: 1000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-            setTimeout(() => {
-                window.location.reload();
-              }, 2000);
-          } else {
-            // Display error toast message
-            toast.error('Failed to update course status', {
-              position: 'top-right',
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-            console.error('Failed to update status');
-          }
+  useEffect(() => {
+    fetch("http://localhost:8001/course/all_learner_courses")
+      .then((response) => response.json())
+      .then((data) => {
+        // Filter out courses with status false
+        const filteredCourses = data.data.filter((course) => course.status === true);
+        setTrueCourses(filteredCourses);
+      })
+      .catch((error) => console.error("Error fetching courses:", error));
+  }, []);
+
+  const handleUnlist = (courseId, instructorEmail, courseName) => {
+    axios.put(`http://localhost:8001/course/update_status/${courseId}`, { status: false })
+        .then((response) => {
+            if (response.status === 200) {
+                // Send email notification if the course is approved
+                axios.post('http://localhost:8004/notify/email3', { email: instructorEmail, courseName: courseName})
+                    .then((emailResponse) => {
+                        if (emailResponse.status === 200) {
+                            console.log('Email notification sent successfully');
+                        } else {
+                            console.error('Failed to send email notification');
+                        }
+                        // Display success toast message
+                        toast.success('Course Unlisted updated successfully!', {
+                            position: 'top-right',
+                            autoClose: 1000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
+                        // Reload the page after sending the email and displaying the toast message
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000);
+                    })
+                    .catch((emailError) => {
+                        console.error('Error sending email notification:', emailError);
+                        // Display error toast message if sending email fails
+                        toast.error('Failed to send email notification', {
+                            position: 'top-right',
+                            autoClose: 1000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
+                        // Reload the page after displaying the error toast
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000);
+                    });
+            } else {
+                // Display error toast message if updating course status fails
+                toast.error('Failed to update course status', {
+                    position: 'top-right',
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                console.error('Failed to update status');
+            }
         })
         .catch((error) => {
-          // Display error toast message
-          toast.error('Error updating status', {
-            position: 'top-right',
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-          console.error('Error updating status:', error);
+            // Display error toast message if there is an error updating course status
+            toast.error('Error updating status', {
+                position: 'top-right',
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            console.error('Error updating status:', error);
         });
-    };
-  
-  // Helper function to display success toast message
-  const showSuccessToast = (message) => {
-    toast.success(message, {
-      position: 'top-right',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  };
-  
-  // Helper function to display error toast message
-  const showErrorToast = (message) => {
-    toast.error(message, {
-      position: 'top-right',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  };
+};
+
+  const handleStatusChange = (courseId, instructorEmail, courseName) => {
+    axios.put(`http://localhost:8001/course/update_status/${courseId}`, { status: true })
+        .then((response) => {
+            if (response.status === 200) {
+                // Send email notification if the course is approved
+                axios.post('http://localhost:8004/notify/email2', { email: instructorEmail, courseName: courseName})
+                    .then((emailResponse) => {
+                        if (emailResponse.status === 200) {
+                            console.log('Email notification sent successfully');
+                        } else {
+                            console.error('Failed to send email notification');
+                        }
+                        // Display success toast message
+                        toast.success('Course status updated successfully!', {
+                            position: 'top-right',
+                            autoClose: 1000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
+                        // Reload the page after sending the email and displaying the toast message
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000);
+                    })
+                    .catch((emailError) => {
+                        console.error('Error sending email notification:', emailError);
+                        // Display error toast message if sending email fails
+                        toast.error('Failed to send email notification', {
+                            position: 'top-right',
+                            autoClose: 1000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
+                        // Reload the page after displaying the error toast
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000);
+                    });
+            } else {
+                // Display error toast message if updating course status fails
+                toast.error('Failed to update course status', {
+                    position: 'top-right',
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                console.error('Failed to update status');
+            }
+        })
+        .catch((error) => {
+            // Display error toast message if there is an error updating course status
+            toast.error('Error updating status', {
+                position: 'top-right',
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            console.error('Error updating status:', error);
+        });
+};
+
+    
   
   
   return (
@@ -127,8 +216,14 @@ export default function AdminDashboard() {
             <li className="cursor-pointer text-blue-500 font-bold text-xl py-6 hover:bg-white" onClick={() => scrollToSection(approveCoursesRef)}>
               Approve Courses
             </li>
+            <li className="cursor-pointer text-blue-500 font-bold text-xl py-6 hover:bg-white" onClick={() => scrollToSection(unlistCoursesRef)}>
+              Unlist Courses
+            </li>
             <li className="cursor-pointer text-blue-500 font-bold text-xl py-6 hover:bg-white" onClick={() => (window.location.href = "./instSignup")}>
              New Admin/Instructor
+            </li>
+            <li className="cursor-pointer text-blue-500 font-bold text-xl py-6 hover:bg-white" onClick={() => (window.location.href = "/admin/payment-history")}>
+            Transaction History
             </li>
           </ul>
         </div>
@@ -149,8 +244,9 @@ export default function AdminDashboard() {
           <p className="text-7xl font-bold mb-4 text-blue-500"><span className=" text-sky-700 ">Welcome</span> Admin..!</p>
         </div>
 
+        
         {/* Approve Courses Section */}
-        <div ref={approveCoursesRef} className="mt-8 h-screen">
+        <div ref={approveCoursesRef} className="mt-8 ">
           <div className="grid grid-flow-row gap-8 text-blue-500 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {courses.map((course) => (
               <div
@@ -174,7 +270,7 @@ export default function AdminDashboard() {
                         <p>Price: ${course.price}</p>
                       </div>
                       <button
-                        onClick={() => handleStatusChange(course._id)}
+                        onClick={() => handleStatusChange(course._id, course.instructor, course.courseName)}
                         className="mt-5 px-4 py-2 bg-blue-500 text-white font-bold rounded hover:bg-red-600"
                     >
                         Approve Course
@@ -184,9 +280,47 @@ export default function AdminDashboard() {
                 </div>
               </div>
             ))}
-          </div>
+          </div>            
         </div>
-      </div>
+
+         {/* Unlist Courses section */}
+        <div ref={unlistCoursesRef} className="mt-8 h-full">
+          <div className="grid grid-flow-row gap-8 text-blue-500 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {coursesT.map((course) => (
+              <div
+                key={course._id}
+                className="my-3 bg-gray-100 shadow-lg shadow-gray-200 duration-300 hover:-translate-y-1 rounded border-2 border-black"
+              >
+                <div className="cursor-pointer">
+                  <figure>
+                    <img
+                      src={course.imageUrl}
+                      alt={course.courseName}
+                      className="w-full h-48 object-cover overflow-hidden"
+                    />
+                    <figcaption className="p-4">
+                      <p className="text-lg mb-2 font-bold leading-relaxed text-blue-500">
+                        {course.courseName}
+                      </p>
+                      <p className="text-sm mb-4">{course.description}</p>
+                      <div className="flex justify-between">
+                        <p>Instructor: {course.instructor}</p>
+                        <p>Price: ${course.price}</p>
+                      </div>
+                      <button
+                        onClick={() => handleUnlist(course._id, course.instructor, course.courseName)}
+                        className="mt-5 px-4 py-2 bg-blue-500 text-white font-bold rounded hover:bg-red-600"
+                    >
+                        Unlist Course
+                    </button>
+                    </figcaption>
+                  </figure>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>             
+      </div>    
       <ToastContainer />
     </div>
   );

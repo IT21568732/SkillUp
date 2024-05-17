@@ -20,8 +20,9 @@ import AllQuizzesPage from "./componets/courseView/allQuizzes.page.jsx";
 import AdminDashboard from "./componets/adminView/adminDashboard.jsx";
 import InstructorSignup from "./componets/adminView/instructorSignup.jsx";
 import AdminLayout from "./layouts/admin.layout.jsx";
-
-
+import Payment from "./componets/learnerView/Payment.jsx";
+import Successpage from './componets/learnerView/Successpage.jsx';
+import PaymentHistory from './componets/adminView/PaymentHistory.jsx';
 
 
 const router = createBrowserRouter([
@@ -47,7 +48,12 @@ const router = createBrowserRouter([
           {
             path: "instSignup",
             element: <InstructorSignup />,
-          },            
+          }, 
+          {
+            path: "payment-history",
+            element: <PaymentHistory />,
+          }, 
+                 
         ],
       },
       {
@@ -95,6 +101,14 @@ const router = createBrowserRouter([
           {
             path: "mycourse/:id",
             element: <CourseDetail />,
+          },
+          {
+            path: "payment/:id",
+            element: <Payment />,
+          },
+          {
+            path: "success",
+            element: <Successpage />,
           },            
         ],
       },

@@ -86,11 +86,9 @@ const Home = () => {
                       </p>
                       <p className="text-sm mb-4">{course.courseDescription}</p>{" "}
                       {/* Assuming courseDescription is available in course details */}
-                      <div className="flex justify-between">
+                      <div className="text-black font-bold">
                         <p>Instructor: {course.instructor}</p>{" "}
-                        {/* Assuming instructor is available in course details */}
-                        <p>Progress: {course.progress}</p>{" "}
-                        {/* Assuming progress is available in course details */}
+                        {/* Assuming instructor is available in course details */} 
                       </div>
                     </figcaption>
                   </figure>
@@ -129,7 +127,7 @@ const Home = () => {
                         {course.courseName}
                       </p>
                       <p className="text-sm mb-4">{course.description}</p>
-                      <div className="flex justify-between">
+                      <div className="text-black font-bold">
                         <p>Instructor: {course.instructor}</p>
                         <p>Price: ${course.price}</p>
                       </div>

@@ -11,22 +11,23 @@ dotenv.config();
 
 // Set up CORS
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN || "http://localhost:8004",
+  origin: "http://localhost:5173" || "http://localhost:8004",
 };
 const app = express();
 app.use(cors(corsOptions));
 
 // Connect to MongoDB
-mongoose.connect(
-  process.env.MONGODB_URL,
-  { useNewUrlParser: true, useUnifiedTopology: true }
-)
-.then(() => {
-  console.log("Connected to MongoDB");
-})
-.catch((err) => {
-  console.error("Database Connection Error: ", err);
-});
+mongoose
+  .connect(process.env.MONGODB_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((err) => {
+    console.error("Database Connection Error: ", err);
+  });
 
 // Set up Body Parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));

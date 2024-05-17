@@ -107,6 +107,23 @@ function SingleCourse() {
     }
   };
 
+  // const handleDeleteLesson = async (lessonId) => {
+  //   try {
+  //     const response = await fetch(`http://localhost:8001/lesson/delete/${lessonId}`, {
+  //       method: "DELETE",
+  //     });
+  //     if (response.ok) {
+  //       // Remove the deleted lesson from the state
+  //       setLessons(lessons.filter((lesson) => lesson._id !== lessonId));
+  //       console.log("Lesson deleted successfully");
+  //     } else {
+  //       console.error("Failed to delete lesson");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error deleting lesson:", error);
+  //   }
+  // };
+
   const handleCreateQuiz = () => {
     navigate(`/instructor/create_quiz/${courseId}`);
   };
@@ -184,12 +201,15 @@ function SingleCourse() {
                           Your browser does not support the video tag.
                         </video>
                         {/* Delete button */}
-                        <button
+                        {/* <button
                           onClick={() => handleDeleteLesson(lesson.data._id)}
                           className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-2"
                         >
                           Delete
-                        </button>
+                        </button> */}
+                        <br/>
+                        <br/>
+                        <h1>------------------------------------------------</h1>
                       </li>
                     ))}
                   </ul>

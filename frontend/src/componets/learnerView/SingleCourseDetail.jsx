@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const SingleCourseDetail = () => {
   const token = localStorage.getItem("authToken");
@@ -105,8 +106,10 @@ const SingleCourseDetail = () => {
       <h1 className="text-sm font-bold mb-4 text-blue-600">
         Course ID: {course._id}
       </h1>
-      <button className="bg-blue-600 rounded-xl py-2 px-2 text-white" >Pay & Enroll</button>
-      <button className="bg-blue-600 rounded-xl py-2 px-2 text-white" onClick={handleEnrollClick}>Enroll</button>
+      <Link to={`/learner/payment/${course._id}`} >
+      <button className="bg-blue-600 rounded-xl py-2 px-2 text-white" onClick={handleEnrollClick}>Pay & Enroll</button>
+      </Link>
+      {/* <button className="bg-blue-600 rounded-xl py-2 px-2 text-white" onClick={handleEnrollClick}>Enroll</button> */}
     </div>
   );
 };
